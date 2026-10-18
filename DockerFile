@@ -1,0 +1,31 @@
+# Base
+FROM python:3.12-slim
+
+# configure environment
+ENV PYTHONDONWRITEBYTECODE=1 \
+PYTHONUNBUFFERED=1 \
+TASK_PULZE_ENV=prod \
+TASK_PULZE_HOST=0.0.0.0 \
+TASK_PULZE_PORT=8000
+
+# Working directory
+WORKDIR /app
+
+# Install dependencies
+COPY pyproject.toml ./
+COPY src ./src
+
+# Install dependencies
+RUN pip install --no-cache-dir -e . && useradd --create-home app
+
+# Switch to the app user
+USER app
+
+# Expose the port
+EXPOSE 8000
+
+# Health check
+HEALTHCHECK CMD python -c "import urllib.request; urllib.urlopen('http://127.0.0.1:8000/health')"
+
+# start application
+CMD ["task-pulze"]

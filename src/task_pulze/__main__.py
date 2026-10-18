@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import sys
 
@@ -9,6 +10,10 @@ from task_pulze.server import create_server
 
 
 def main() -> None:
+    if sys.platform == "win32":
+        # psycopg's async driver can't run on Windows' default Proactor event loop.
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
     try:
         settings = get_settings()
     except ValidationError as exc:
