@@ -25,7 +25,6 @@ USER app
 EXPOSE 8000
 
 # Health check
-HEALTHCHECK CMD python -c "import urllib.request; urllib.urlopen('http://127.0.0.1:8000/health')"
-
+HEALTHCHECK CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')"
 # start application
 CMD ["task-pulze"]
