@@ -13,4 +13,3 @@ build/
 *.db-wal
 *.db-shm
 *.ipynb
-*.md
